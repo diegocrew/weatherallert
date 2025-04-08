@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 # Configuration - Replace with your details
 LOCATION = "New York,US"  # Example: "London,UK" or "Chicago,US"
-+OPENWEATHER_API_KEY = (
+OPENWEATHER_API_KEY = (
     "your_openweather_api_key"  # Get from https://openweathermap.org/api
 )
 EMAIL_FROM = "your_email@gmail.com"
@@ -18,7 +18,9 @@ SMTP_PORT = 587
 
 def get_weather_forecast():
     # Get hourly forecast for the next 48 hours (API returns 48 hours by default)
-    url = f"http://api.openweathermap.org/data/2.5/forecast?q={LOCATION}&appid={OPENWEATHER_API_KEY}&units=metric"
+    from urllib.parse import quote
+    encoded_api_key = quote(OPENWEATHER_API_KEY)
+    url = f"http://api.openweathermap.org/data/2.5/forecast?q={LOCATION}&appid={encoded_api_key}&units=metric"
 
     try:
         response = requests.get(url)
