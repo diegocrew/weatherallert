@@ -1,16 +1,8 @@
 import requests
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 
 # Configuration - Replace with your details
 LOCATION = "New York"  # Example: "London" or "Chicago"
-EMAIL_FROM = "your_email@gmail.com"
-EMAIL_TO = "recipient_email@example.com"
-EMAIL_PASSWORD = "your_email_password"  # Use app-specific password if using Gmail
-SMTP_SERVER = "smtp.gmail.com"  # Change if not using Gmail
-SMTP_PORT = 587
 
 
 def get_weather_forecast():
@@ -25,26 +17,10 @@ def get_weather_forecast():
         return f"Error fetching weather data: {str(e)}"
 
 
-def send_email(forecast):
-    # Create email message
-    msg = MIMEMultipart()
-    msg["From"] = EMAIL_FROM
-    msg["To"] = EMAIL_TO
-    msg["Subject"] = f"Weather Forecast for {LOCATION} - {datetime.now().strftime('%Y-%m-%d')}"
-    
-    body = f"Weather Forecast for {LOCATION}:\n\n{forecast}"
-    msg.attach(MIMEText(body, "plain"))
-    
-    # Send email
-    try:
-        server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
-        server.starttls()
-        server.login(EMAIL_FROM, EMAIL_PASSWORD)
-        server.send_message(msg)
-        server.quit()
-        print("Email sent successfully!")
-    except Exception as e:
-        print(f"Error sending email: {str(e)}")
+def display_forecast(forecast):
+    # Display the weather forecast on the screen
+    print(f"Weather Forecast for {LOCATION} - {datetime.now().strftime('%Y-%m-%d')}")
+    print(forecast)
 
 
 if __name__ == "__main__":
@@ -52,7 +28,6 @@ if __name__ == "__main__":
     forecast = get_weather_forecast()
     
     if not forecast.startswith("Error"):
-        print("Sending email...")
-        send_email(forecast)
+        display_forecast(forecast)
     else:
         print(forecast)
